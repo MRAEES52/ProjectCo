@@ -312,7 +312,7 @@
 <?php
 
 //Connects to BrainyCo DB.
-require_once('dbconnect.php');
+include('dbconnect.php');
 
 //Temporary alert function:
 function alert($msg) 
@@ -469,8 +469,70 @@ if (isset($_POST['submit_btn']))
   </div>
   
   </div>
-  
-  <!--mentor form -->
+
+<?php
+//Connects to BrainyCo DB.
+include('dbconnect.php');
+
+//Temporary alert function:
+function alert2($msg) 
+{
+    echo "<script type='text/javascript'> alert('$msg'); </script>";
+}
+
+//Pulling data from student form:
+
+if (isset($_POST['submit_btn2']))
+{
+    $s_firstname = mysqli_real_escape_string($conn,$_POST['student_first']);
+    $s_lastname = mysqli_real_escape_string($conn,$_POST['student_last']);
+    $s_email = mysqli_real_escape_string($conn,$_POST['student_email']);
+    $s_firstgen = mysqli_real_escape_string($conn,$_POST['student_firstgen']);
+    $s_major = mysqli_real_escape_string($conn,$_POST['student_major']);
+    $s_gradyr = mysqli_real_escape_string($conn,$_POST['student_gradyr']);
+    $s_industry = mysqli_real_escape_string($conn,$_POST['student_industry']);
+    $s_position = mysqli_real_escape_string($conn,$_POST['student_position']);
+    $s_linkedin = mysqli_real_escape_string($conn,$_POST['student_linkedin']);
+
+
+
+    //Naming convention for database formality:
+    $s_uc_firstname = ucfirst($s_firstname);
+    $s_uc_lastname = ucfirst($s_lastname);
+    $s_uc_email = ucfirst($s_email);
+    $s_uc_firstgen = ucfirst($s_firstgen);
+    $s_uc_major = ucfirst($s_major);
+    $s_uc_gradyr = ucfirst($s_gradyr);
+    $s_uc_industry = ucfirst($s_industry);
+    $s_uc_position = ucfirst($s_position);
+    $s_uc_linkedin = ucfirst($s_linkedin);
+
+
+    $checkExisting=mysqli_query($conn,"SELECT * FROM student_info WHERE email = '$s_email'");
+	$checkExistingTB=mysqli_fetch_array($checkExisting);
+	
+	if($checkExistingTB['email'] == $s_email)
+	 {
+	 	alert2("E-mail has already been registered in our system. Thank you for signing up!");
+	 }
+	 else
+	 {
+      $insert=mysqli_query($conn,"insert into student_info(firstname,lastname,email,firstgen,major,gradyr,industryinterest,titleinterest,linkedin)values('".mysqli_real_escape_string($conn,$s_uc_firstname)."','".mysqli_real_escape_string($conn,$s_uc_lastname)."','".mysqli_real_escape_string($conn,$s_uc_email)."','".mysqli_real_escape_string($conn,$s_uc_firstgen)."','".mysqli_real_escape_string($conn,$s_uc_major)."','".mysqli_real_escape_string($conn,$s_uc_gradyr)."','".mysqli_real_escape_string($conn,$s_uc_industry)."','".mysqli_real_escape_string($conn,$s_uc_position)."','".mysqli_real_escape_string($conn,$s_uc_linkedin)."')");
+        
+        if($insert)
+	 	{
+	 		alert2("Your information has been registered! You will hear back from us shortly.");
+	 	}
+	 	else
+	 	{
+	 		alert2("There has been an error registering your information.");
+	 	}
+	 }
+}
+
+?>
+
+  <!--student form -->
   <div class="modal fade  bd-example-modal-lg" id="modalPoll2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
   data-backdrop="false">
   <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document">
@@ -500,70 +562,70 @@ if (isset($_POST['submit_btn']))
 
         <!-- input -->
 		
-		<form>
+		<form action = "index.php" method="post" name="studentform" class="form-signin">
 		  <div class="form-group"> <!-- Full Name -->
 		<label for="full_name_id" class="control-label">First Name</label>
-		<input type="text" class="form-control" id="full_name_id" name="full_name" placeholder="John">
+		<input type="text" class="form-control" id="full_name_id" name="student_first" placeholder="John" required>
 		</div>	
 		
 		<div class="form-group"> <!-- Full Name -->
 		<label for="full_name_id" class="control-label">Last Name</label>
-		<input type="text" class="form-control" id="full_name_id" name="full_name" placeholder="doe">
+		<input type="text" class="form-control" id="full_name_id" name="student_last" placeholder="doe" required>
 		</div>	
 
 	<div class="form-group"> <!-- Street 1 -->
 		<label for="street1_id" class="control-label">Email Adress</label>
-		<input type="text" class="form-control" id="street1_id" name="street1" placeholder="name@example.com">
+		<input type="text" class="form-control" id="street1_id" name="student_email" placeholder="name@example.com" required>
 	</div>		
 	
 	<div class="form-group">
 		<label for="street1_id" class="control-label">Are you a first generation college student?</label> 
-		<select class="form-control">
+		<select class="form-control" name="student_firstgen" required>
 		<option>Please select an option</option>
-		<option>Yes</option>
-		<option>No</option>
+		<option value="Yes">Yes</option>
+		<option value="Yes">No</option>
 		</select>
 	</div>	
 							
 	<div class="form-group"> <!-- City-->
 		<label for="city_id" class="control-label">Current Major?</label>
-		<input type="text" class="form-control" id="city_id" name="city" placeholder="eg. Economics">
+		<input type="text" class="form-control" id="city_id" name="student_major" placeholder="eg. Economics" required>
 	</div>	
 	
 	<div class="form-group"> <!-- City-->
 		<label for="city_id" class="control-label">Graduation Year</label>
-		<input type="text" class="form-control" id="city_id" name="city" placeholder="eg. 2018">
+		<input type="text" class="form-control" id="city_id" name="student_gradyr" placeholder="eg. 2018" required>
 	</div>						
 	<div class="form-group"> <!-- State Button -->
 		<label for="state_id" class="control-label">Which industry do you want to pursue?</label>
-		<select class="form-control" id="state_id">
-			<option value="AL">Healthcare</option>
-			<option value="AK">Technology</option>
-			<option value="AZ">Finance</option>
-			<option value="AR">Energy</option>
-			<option value="CA">Agriculture</option>
-			<option value="CO">Real Estate</option>
-			<option value="CT">Entertainment</option>
-			<option value="DE">Telecommunications</option>
-			<option value="DE">Construction</option>
-			<option value="DE">Pharmaceutical</option>
-			<option value="DE">Other</option>
+		<select class="form-control" id="state_id" name="student_industry" required>
+			<option value="Healthcare">Healthcare</option>
+			<option value="Technology">Technology</option>
+			<option value="Finance">Finance</option>
+			<option value="Energy">Energy</option>
+			<option value="Agriculture">Agriculture</option>
+			<option value="Real Estate">Real Estate</option>
+			<option value="Entertainment">Entertainment</option>
+			<option value="Telecommunications">Telecommunications</option>
+			<option value="Construction">Construction</option>
+			<option value="Pharmaceutical">Pharmaceutical</option>
+			<option value="Other">Other</option>
 		
 		</select>					
 	</div>
 	<div class="form-group"> <!-- City-->
 		<label for="city_id" class="control-label">Which position are you looking to pursue?</label>
-		<input type="text" class="form-control" id="city_id" name="city" placeholder="eg. business analyst">
+		<input type="text" class="form-control" id="city_id" name="student_position" placeholder="eg. business analyst" required>
 	</div>
 			
 	<div class="form-group"> 
 		<label for="city_id" class="control-label">Paste your Linkedin URL</label>
-		<input type="text" class="form-control" id="city_id" name="city" placeholder="">
+		<input type="text" class="form-control" id="city_id" name="student_linkedin" placeholder="">
 	</div>
 	<div class="form-group"> 
 	<div id="subbut"><!-- Submit Button -->
 	
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-primary" name="submit_btn2">Submit</button>
 	</div>
 	</div>     
 	
