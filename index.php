@@ -6,8 +6,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Mobland - Mobile App Landing Page Template">
-    <meta name="keywords" content="HTML5, bootstrap, mobile, app, landing, ios, android, responsive">
+    <meta name="description" content="Opportunity Gap">
+    <meta name="keywords" content="Opportunity Gap, Student debt, Jobs, First-generation College Students">
 
     <!-- Font -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
